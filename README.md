@@ -26,7 +26,6 @@ d. Experimental Results evaluate the classification problem on EGFR dataset, and
 
 *Comments* : Experimental results comparing different models show that performance can vary significantly depending on the type of featurization being used to get molecule features from the smiles representation. For e.g when we used graph networks with MGCF featurization, performance can drop significantly, compared to using more standard featurizations for this dataset (e.g rdFingerprintGenerator) and training a standard NN classifier without any graph network. This shows that if proper domain knowledge was available, the choice of featurization to use indicates a lot about the type of model ideal for use in this dataset. Our results can be improved further if we could try and pick the best type of featurizations (could not do it due to lack of compute resources and time). Nevertheless, this repository should give an expeirmental comparison of different models for the EGFR dataset, and provides an active learning pipeline to improve the ratio of active and inactive compounds (and improve on the class balancing problem). 
 
-
 ## Approach
 
 We consider the problem of predicting pIC50 potency values, as a classification problem, 
@@ -49,12 +48,13 @@ In particular, we try *a few models* for this dataset, under different molecular
 4. Graph Attention and Convolutional Network
 5. Deep Bayesian Neural Network with an Active Learning pipeline
 
-##### Featurization - TODO
-For ** Model 1 (Attention) ** we follow --- disscuss
-For Others, we assume a graph structure 
+### Featurization 
+We use several different types of featurization, depending on the model at use. For e,g for the Graph Convolutional and Attention networks (GCN and GAT) we use a MGCF featurizer to conver the smiles representation, to get GraphData with node features, edge indices and adjacency matrices. Similar attributes can also be obtained, if we use other types of featurizatioon (e.g to get molecule representations from smiles), when we used a Marked Attention Transformer (MAT). Other than graph networks and attention transformers, we also trained a relatively simple Bayesian NN with Monte-Carlo dropout, where we used a rdFingerprintGenerator based featurization of the smiles representation to train a standard Bayesian classifier on this dataset. Performance varies significantly depending on the featurization. 
 
 
 ## Description of Model and Approach, and Experimental Results
+
+
 
 ### Attention Transformer for Molecules
 Firstly, we use a molecule attention transformer (MAT) since it has been shown to be useful 
