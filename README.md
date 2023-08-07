@@ -125,6 +125,9 @@ Training Set Size:  29%|█████████████████▎  
 AUC Score 0.596601888044841 
 ```
 
+#### Achieving a Balanced Dataset from Active Learning : 
+After running the active learning pipeline, we save the dataset indices of the most informative samples; these indices are then used to construct a new dataset, consisting of only the samples that were queried from active learning. This is denoted as the *Balanced Dataset* and we compare performance between the imbalanced and balanced datasets, for each of the models below
+
 
 ### Attention Transformer for Molecules
 Firstly, we use a molecule attention transformer (MAT) since it has been shown to be useful 
@@ -138,6 +141,7 @@ distance matrix.
 We implemented the MAT on this dataset, by using a train/validation split. The model takes quite some 
 time to run on cpu, so we could not train it to full-extent. Below are results on both the imbalanced and the balanced dataset
 
+
 ----- Imbalanced Dataset : 
 Epoch 008: | Train Loss: 0.49498 | Train Acc: 80.333| Train ROC: 0.570| 
                  Val Loss: 0.47767 | Val Acc: 81.333 | Val ROC: 0.593
@@ -147,10 +151,52 @@ Epoch 009: | Train Loss: 0.49505 | Train Acc: 80.000| Train ROC: 0.578|
 
 
 ------ Balanced Dataset : 
-
+TODO
 
 
 ### Graph Attention Networks
+
+We trained a graph neural network with attention (GAT) by featurizing the smiles representation to obtain a graph structure from the data, consisting of node features and edge indices. Experimental results below shows performance when a GAT is used on both the balanced and imbalanced datasets. 
+
+Active Index : False (Denotes using the full imbalanced data)
+
+```
+python main_gcn_gat.py --model GAT
+```
+
+Experimental results :
+
+```
+FULL DATASET (Imbalanced Classes)
+Number of active compounds: 873
+Number of inactive compounds: 3762
+
+After initial training epochs; 
+ROC values are low; can be improved further with careful model training
+
+Eval Acc 0.8015594541910331
+ROC AUC 0.5
+
+```
+
+Active Index : True (Denotes using a small but balanced dataset)
+```
+python main_gcn_gat.py --model GAT --active_index True
+```
+
+Experimental Results : 
+
+```
+Number of active compounds: 560
+Number of inactive compounds: 1240
+
+^^^ Better ratio of active to inactive compounds after the active learning pipeline
+
+Eval Acc 0.8089097303634232
+ROC AUC 0.5
+
+```
+
 
 
 ### Graph Convolutional Network
@@ -158,33 +204,30 @@ We used an off the shelf GCN model implementation, and adapted the featurization
 to use a MGCF featurizer from RDKIT to convert smiles into graph data. Performance of a GCN 
 model is as given beloe. The model uses as input the graph node features and edge indices. 
 
------ Imbalanced Dataset : 
-
-
 ----- Balanced Dataset :
 
-### Graph Attention Network
-Similar to the attention mechanism used in the Molecule Transformer, we used attention in graph networks as 
-well, to implementa Graph Attention Network (GAT). As before, the featurization is achieved with a MGCF featurizer
-to convert smiles data into graph structure. The model uses as input the graph node features and edge indices. 
 
+```
+python main_gcn_gat.py --model GCN --active_index True
+```
 
------ Imbalanced Dataset : 
-
-
------ Balanced Dataset :
+```
+Eval Acc 0.8093005080109418
+ROC AUC 0.5
+```
 
 
 ### Graph Convolutional Network with Attention 
-
------ Imbalanced Dataset : 
-
+```
+python main_gcn_gat.py --model GCN_GAT --active_index True
+```
 
 ----- Balanced Dataset :
+```
+Eval Acc 0.8158200853043815
+ROC AUC 0.5
 
-
-## Bayesian Active Learning for Class Imbalance Problem
-
+```
 
 
 
