@@ -165,10 +165,22 @@ Shape of dataframe :  (1800, 10)
 Number of active compounds: 560
 Number of inactive compounds: 1240
 
+Epoch 001: | Train Loss: 0.69321 | Train Acc: 50.000| Train ROC: 0.520| 
+                 Val Loss: 0.69326 | Val Acc: 49.000 | Val ROC: 0.491
+====epoch 2
+Epoch 002: | Train Loss: 0.69271 | Train Acc: 48.000| Train ROC: 0.520| 
+                 Val Loss: 0.69292 | Val Acc: 53.000 | Val ROC: 0.491
+
+====epoch 3
+Epoch 003: | Train Loss: 0.69277 | Train Acc: 50.000| Train ROC: 0.520| 
+                 Val Loss: 0.69291 | Val Acc: 52.000 | Val ROC: 0.491
+
+====epoch 4
+Epoch 004: | Train Loss: 0.69278 | Train Acc: 50.000| Train ROC: 0.520| 
+                 Val Loss: 0.69302 | Val Acc: 51.000 | Val ROC: 0.490
+
+
 ```
-
-
-
 
 
 ### Graph Attention Networks
@@ -249,14 +261,39 @@ ROC AUC 0.5
 
 
 ## Failure Modes and Limitations
-Structure mapping with active and inactive
-Graph structure not there - so featurizers not useful that converts smiles to graph structure
+
+Our experimental results with different models show that performance can be signifantly improved, as the classifiers
+only achieve a ROC score of 0.5-0.6 on this dataset, even on the balanced data after the active learning pipeline. In comparison, if we use a standard rdFingerprintGenerator featurizer, performance can be significantly higher using baseline models. 
+
+This suggests a major failure mode of the models, and an underlying limitation, depending on the type of featurization we are using for handling the smiles representations. We assuemd that the dataset has a graph structure, and that a MGCF featurizer would be ideal; however, turns out that more simpler featurizations based on FingerPrinting can even do well on this dataset, with a standard model, without any need for graph structure. 
+
+This indicates that for problems of detecting active compounds of this type, it is very important to leverage the right kind of featurization, where domain knowledge and expertise might be helpful too. 
+
+With little domain knowledge, we assumed that all molecular and smiles representations would naturally have a graph structure, and so using a GAT or a Molecule Attention transformer would be ideal; however, the performance of using this model does not increase signifciantly, for our featurization; 
+
+Our best performing model was indeed the Bayesian network with MC Dropout, which could also handle small data regime, tackling the class imbalance problem in this datset.
+
 
 
 ## Future Work and Things Remaining To Do
 
+Few important things come to mind as future work, and things I could have done to improve and get better results : 
 
+1. Each of the models here require careful fine-tuning and playing around with, to see if they can do well in this dataset. 
 
+2. Different featurizations to be tried depending on the models we have; for example, identifying what's the right kind of featurization for this dataset - based on which it would be better to select the classifier models. 
+
+3. We took an active learning based approach for handling class imbalance. However, there are more standard techniques (see this surevey paper [6]) from which there are different sampling schemes to handle class imbalance
+
+4. Better results with relatively simpler models and adding regularization and other hacks; for example, we implemented and tried with more complex models such as GAT and MATs; however, perhaps for this dataset, even simpler standard models can do well, with the right featurization and regularizer. Some of our baselines with using a sklearn package, with FingerPrinting molecule generation showed that standard NNs and Random Forest classifiers can do well on this dataset; 
+
+5. We used a ROC/AUC metric for reporting performance; would be interesting to see what other metrics are more appropriate for imbalanded class settings. For example, are there other robust metric learning losses for handling imbalanced data?
+
+6. We did not do any pre-training or did not pick any fine-tuned models; rather all our models are implemented following references from open codebases, and adapted to this dataset to make it work; it would perhaps be better to take existing fine-tuned models that are made to work on similar datasets - so that our current results/performances can be improved significantly. We beleive that our classifier performances can be much better with the right kind of featurization and domain knowledge
+
+It would be better for me to start early and give more time on the task given even though enough 7 days were given, although I was unable due to the job activities. I only worked on this over the weekends, and was caught up with the NeurIPS rebuttal last week. If I had more time, I believe I could have done better job at training the above models, and get improved performance metrics. 
+
+I really like the topic and it would be very motivating to work on similar research directions and problems. Thank you!
 
 ### References : 
 [1] Molecule Attention Transformer (from the paper : https://arxiv.org/pdf/2002.08264.pdf)
@@ -269,3 +306,4 @@ Graph structure not there - so featurizers not useful that converts smiles to gr
 
 [5] Graph Convolutional Networks : https://tkipf.github.io/graph-convolutional-networks/ 
 
+[6] For Class Imbalance; Deep long tailed learning : https://arxiv.org/pdf/2110.04596.pdf 
