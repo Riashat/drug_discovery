@@ -260,8 +260,12 @@ Graph structure not there - so featurizers not useful that converts smiles to gr
 
 ### References : 
 [1] Molecule Attention Transformer (from the paper : https://arxiv.org/pdf/2002.08264.pdf)
+
 [2] Deep Bayesian Active Learning with Image Data : https://arxiv.org/abs/1703.02910
+
 [3] BatchBald : Efficient and Diverse Batch Acquisition :  https://arxiv.org/abs/1906.08158
+
 [4] Graph Attention Networks :  https://arxiv.org/abs/1710.10903
+
 [5] Graph Convolutional Networks : https://tkipf.github.io/graph-convolutional-networks/ 
 
