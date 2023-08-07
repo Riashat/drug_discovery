@@ -8,11 +8,16 @@ from rdkit.Chem import Draw
 from deepchem.feat import MolGraphConvFeaturizer as MGCF
 import torch
 import torch.nn.functional as F
+from torch.nn import Linear, Dropout
+from torch_geometric.nn import GCNConv, GATv2Conv
+import math
 import torch
 import torch.nn as nn
-
+import random
+import argparse
+import os
 import pandas as pd
-
+import pickle
 
 def train_val_test(X_smiles, Y):
 
@@ -70,7 +75,9 @@ def load_data(active=False):
         data = 	pd.read_csv("/Users/Riashat/Documents/interviews/valence/drug_discovery/egfr_compounds_classification.csv",
             index_col=0,
         )
+
         active_indices = np.load("active_indices.npy")
+        import ipdb; ipdb.set_trace()
         data = data.iloc[active_indices, :]
 
         print("Number of active compounds:", int(data.active.sum()))
@@ -131,21 +138,16 @@ class DotDict(dict):
 
 def data_load():
 
-    data = 	pd.read_csv("/Users/Riashat/Documents/interviews/valence/drug_discovery/egfr_compounds.csv",
+    data = pd.read_csv("/Users/Riashat/Documents/interviews/valence/drug_discovery/egfr_compounds.csv",
         index_col=0,
     )
-
-    ### Using the dataset from active learning
-    ### with the most informative samples 
-    ### more balanced dataset, with improved proporition of active to inactive compounds
-    active_indices = np.load("active_indices.npy")
-    data = data.iloc[active_indices, :]
 
     print("Shape of dataframe : ", data.shape)
     data.head()
 
     # Keep only the columns we want
     data = data[["molecule_chembl_id", "smiles", "pIC50"]]
+    # data = data.iloc[:1800, :]
 
     data.head()
     # NBVAL_CHECK_OUTPUT
