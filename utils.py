@@ -77,7 +77,6 @@ def load_data(active=False):
         )
 
         active_indices = np.load("active_indices.npy")
-        import ipdb; ipdb.set_trace()
         data = data.iloc[active_indices, :]
 
         print("Number of active compounds:", int(data.active.sum()))
