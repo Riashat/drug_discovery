@@ -1,15 +1,11 @@
 import csv
 import numpy as np
 import os
-from matplotlib import pyplot as plt
 #@title Importing RDKit for molecule parsing
 import rdkit as rdkit
 import rdkit.Chem as Chem
-from rdkit.Chem import Draw
 import torch
 import torch.nn.functional as F
-from torch.nn import Linear, Dropout
-# from torch_geometric.nn import GCNConv, GATv2Conv
 import math
 import torch
 import torch.nn as nn
@@ -19,53 +15,32 @@ from warnings import filterwarnings
 import time
 import pandas as pd
 import numpy as np
-# from sklearn.model_selection import KFold, train_test_split
-# from sklearn.metrics import auc, accuracy_score, recall_score
-import matplotlib.pyplot as plt
 from rdkit import Chem
-from rdkit.Chem import MACCSkeys, rdFingerprintGenerator
 # Import required libraries for data analysis and visualisation
-import matplotlib.pyplot as plt
-import numpy as np
 import pandas as pd
 import rdkit as rdkit
-from rdkit import Chem, DataStructs
-from rdkit.Chem import Draw
-from rdkit.Chem.rdchem import Mol
-from rdkit.Chem.MolStandardize.rdMolStandardize import LargestFragmentChooser
+
+# from rdkit.Chem.rdchem import Mol
 from rdkit import RDLogger
 from rdkit.Chem import MolFromSmiles
-from torch.utils.data import Dataset
+
 import logging
 from rdkit.Chem import AllChem
 from rdkit.Chem import MolFromSmiles
-from torch.utils.data import Dataset
 
 # Data Loader
 import pickle
-import os
-
-# Scaffold splitting
-from rdkit.Chem.Scaffolds import MurckoScaffold
-from itertools import compress
-from collections import defaultdict
 
 # Utils
 from sklearn.metrics import roc_auc_score
 # # Define the attention model
-import torch
 import torch.optim as optim
-import torch.nn.functional as F
-from functools import partial
-from torch import nn, einsum
-from einops import rearrange
 
-
-from utils import DotDict, data_load, draw_smiles, one_hot_vector, feature_normalize
-from utils import generate_scaffold, random_scaffold_split, pad_array, EarlyStopper, binary_acc
+from utils import DotDict, data_load, feature_normalize
+from utils import  EarlyStopper, binary_acc
 from molecule_featurizer import featurize_mol, get_atom_features, Molecule, MolDataset, mol_collate_func
 
-from models import DIST_KERNELS, FeedForward, Attention, AttenModel
+from models import  AttenModel
 
 def load_data_from_smiles(x_smiles, labels, normalize_features=False):
     """Load and featurize data from lists of SMILES strings and labels.

@@ -4,12 +4,9 @@ from matplotlib import pyplot as plt
 #@title Importing RDKit for molecule parsing
 import rdkit as rdkit
 import rdkit.Chem as Chem
-from rdkit.Chem import Draw
 from deepchem.feat import MolGraphConvFeaturizer as MGCF
 import torch
 import torch.nn.functional as F
-from torch.nn import Linear, Dropout
-from torch_geometric.nn import GCNConv, GATv2Conv
 import math
 import torch
 import torch.nn as nn
@@ -19,13 +16,11 @@ import os
 import pandas as pd
 import pickle
 from sklearn.metrics import roc_curve, roc_auc_score
-
 from sklearn.metrics import accuracy_score
 from sklearn.metrics import roc_auc_score
-
-from models import GCN_GAT, GCN, GAT, GraphAttentionLayer, GraphMLP
-from utils import train_val_test, load_data, binary_acc
-from graph_featurizer import construct_adjacency_matrix, construct_graphs
+from models import GCN_GAT, GCN, GAT, GraphMLP
+from utils import  load_data 
+from graph_featurizer import construct_graphs
 
 def evaluate_model(args, model, all_test_smiles, test_logDs):
 	model.eval()
@@ -126,10 +121,6 @@ def main(args):
 	eval_interval = args.eval_interval
 
 	train_smiles, train_logDs, test_smiles, test_logDs = load_data(active=args.active_index)
-	# train_smiles = train_smiles[:1000]
-	# train_logDs = train_logDs[:1000]
-	# test_smiles = test_smiles[:500]
-	# test_logDs = test_logDs[:500]
 	all_smiles = construct_graphs(train_smiles, train_logDs)
 	all_test_smiles = construct_graphs(test_smiles, test_logDs)
 

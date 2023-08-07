@@ -26,7 +26,7 @@ from sklearn.metrics import roc_curve, roc_auc_score
 '''
 ---------
 
-ATTENTION AND TRANSFORMER MODELS
+ATTENTION AND TRANSFORMER MODELS (Molecule Attention Transformer)
 
 ---------
 '''

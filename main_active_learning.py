@@ -1,4 +1,3 @@
-import blackhc.project.script
 from tqdm.auto import tqdm
 import math
 import torch
@@ -9,8 +8,6 @@ from batchbald_redux import (
     active_learning,
     batchbald,
     consistent_mc_dropout,
-    joint_entropy,
-    repeated_mnist,
 )
 from rdkit import Chem
 from rdkit.Chem import MACCSkeys, rdFingerprintGenerator
@@ -23,8 +20,8 @@ from sklearn.model_selection import KFold, train_test_split
 from sklearn.metrics import roc_auc_score
 import torch
 import torch.utils.data as data
-from torch.utils.data import Dataset
-from torchvision import datasets, transforms     
+# from torch.utils.data import Dataset
+# from torchvision import datasets, transforms     
 
 def get_targets(dataset):
     """Get the targets of a dataset without any target transforms.
@@ -125,8 +122,6 @@ train_dataset_x = splits[0]
 train_dataset_y = splits[2]
 test_dataset_x = splits[1]
 test_dataset_y = splits[3]
-
-# num_initial_samples = 20
 num_classes = 2
 
 
@@ -166,18 +161,12 @@ active_learning_data.acquire(initial_samples)
 # THIS REMOVES MOST OF THE POOL DATA. UNCOMMENT THIS TO TAKE ALL UNLABELLED DATA INTO ACCOUNT!
 active_learning_data.extract_dataset_from_pool(500)
 
-## trial
-# active_learning_data.extract_dataset_from_pool(200)
-
-
-
 train_loader = torch.utils.data.DataLoader(
     active_learning_data.training_dataset,
     sampler=active_learning.RandomFixedLengthSampler(active_learning_data.training_dataset, training_iterations),
     batch_size=batch_size,
     **kwargs,
 )
-
 
 pool_loader = torch.utils.data.DataLoader(
     active_learning_data.pool_dataset, batch_size=scoring_batch_size, shuffle=False, **kwargs
@@ -298,12 +287,10 @@ while True:
     added_indices.append(dataset_indices)
     pbar.update(len(dataset_indices))
 
-## 
-# hide
-# experiment
+
+
 test_accs
-# hide
-# experiment
+
 test_loss
 
 
