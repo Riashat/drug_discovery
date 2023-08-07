@@ -130,6 +130,11 @@ After running the active learning pipeline, we save the dataset indices of the m
 
 
 ### Attention Transformer for Molecules
+
+```
+python main_transformer.py
+```
+
 Firstly, we use a molecule attention transformer (MAT) since it has been shown to be useful 
 for molecular graph structure. MAT can perform relatively well on several molecular prediction tasks 
 and we chose this model for the EGFR prediction task. 
@@ -141,7 +146,7 @@ distance matrix.
 We implemented the MAT on this dataset, by using a train/validation split. The model takes quite some 
 time to run on cpu, so we could not train it to full-extent. Below are results on both the imbalanced and the balanced dataset
 
-
+```
 ----- Imbalanced Dataset : 
 Epoch 008: | Train Loss: 0.49498 | Train Acc: 80.333| Train ROC: 0.570| 
                  Val Loss: 0.47767 | Val Acc: 81.333 | Val ROC: 0.593
@@ -149,9 +154,21 @@ Epoch 008: | Train Loss: 0.49498 | Train Acc: 80.333| Train ROC: 0.570|
 Epoch 009: | Train Loss: 0.49505 | Train Acc: 80.000| Train ROC: 0.578| 
                  Val Loss: 0.47121 | Val Acc: 82.000 | Val ROC: 0.595
 
+```
 
+Experimental results after the active learning pipeline with more balanced/improved proportion
+of active to inactive compounds
+
+```
 ------ Balanced Dataset : 
-TODO
+Shape of dataframe :  (1800, 10)
+Number of active compounds: 560
+Number of inactive compounds: 1240
+
+```
+
+
+
 
 
 ### Graph Attention Networks
