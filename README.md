@@ -52,8 +52,78 @@ In particular, we try *a few models* for this dataset, under different molecular
 We use several different types of featurization, depending on the model at use. For e,g for the Graph Convolutional and Attention networks (GCN and GAT) we use a MGCF featurizer to conver the smiles representation, to get GraphData with node features, edge indices and adjacency matrices. Similar attributes can also be obtained, if we use other types of featurizatioon (e.g to get molecule representations from smiles), when we used a Marked Attention Transformer (MAT). Other than graph networks and attention transformers, we also trained a relatively simple Bayesian NN with Monte-Carlo dropout, where we used a rdFingerprintGenerator based featurization of the smiles representation to train a standard Bayesian classifier on this dataset. Performance varies significantly depending on the featurization. 
 
 
-## Description of Model and Approach, and Experimental Results
+## Description of Model and Approach, with Experimental Results
 
+### Deep Bayesian Active Learning for Imbalanced and Samll Data Regime
+```
+python main_active_learning.py
+```
+Due to the class imbalance problem in this EGFR dataset, we first follow an active learning pipeline to query most informative datapoints, and also be able to train with balanced and small data regime. To do this, we use a Bayesian NN with Monte-Carlo dropout as a classifier to train on small samples, while querying informative samples from a pool set, based on the BALD (Bayesian Active Learning by Disagreement) acquisition function. Experiment results show that as we start with small number of samples, and query and add datapoints to the training set, where the training set now contains a better ratio of active to non-acrive compounds, then performance based on the ROC/AUC metric improves; we use a standard featurization for this, assuming no graph structure in the data. 
+
+From active learning, we query datapoints to eventually train with a total of 1800 training samples. This is because the original dataset was imbalanced with 873 active compounds - so we start from 20 training samples with equal class labels, and query points from the poolset, for a total of ~873 x 2 to reach a more balanced class ratio dataset.
+
+#### Experimental Results with Active Learning from Small Data 
+
+Results show how performance improves as start with only 20 training samples of active and inactive compounds, and query points from pool set to reach a larger number of informative training set
+```
+Training Set Size:  17%|██████████                                                  | 300/1800 [01:57<09:05,  2.75it/sTest set: Average loss: -0.0782, Accuracy: 1450/1854 (78.21%)                                                           
+AUC Score 0.5685835976104433                                                                                           
+Dataset Length
+Pool Set 1981
+Train Set 300
+Training Set Size:  18%|██████████▋                                                 | 320/1800 [02:02<08:17,  2.98it/sTest set: Average loss: -0.0881, Accuracy: 1465/1854 (79.02%)                                                           
+AUC Score 0.5891879932148388 
+Dataset Length
+Pool Set 1961
+Train Set 320
+Training Set Size:  19%|███████████▎                                                | 340/1800 [02:07<07:39,  3.18it/sTest set: Average loss: -0.1330, Accuracy: 1464/1854 (78.96%)                                                           
+AUC Score 0.5878143668412125                                                                                           
+Dataset Length
+Pool Set 1941
+Train Set 340
+Training Set Size:  20%|████████████                                                | 360/1800 [02:13<07:13,  3.32it/sTest set: Average loss: -0.1388, Accuracy: 1484/1854 (80.04%)                                                           
+AUC Score 0.5831071612950808                                                                                           
+Dataset Length
+Pool Set 1921
+Train Set 360
+Training Set Size:  21%|████████████▋                                               | 380/1800 [02:18<06:46,  3.49it/sTest set: Average loss: -0.1442, Accuracy: 1482/1854 (79.94%)                                                           
+AUC Score 0.5886643557784498                                                                                           
+Dataset Length
+Pool Set 1901
+Train Set 380
+Training Set Size:  22%|█████████████▎                                              | 400/1800 [02:23<06:25,  3.63it/sTest set: Average loss: -0.1268, Accuracy: 1479/1854 (79.77%)                                                           
+AUC Score 0.5855815325613983                                                                                           
+Dataset Length
+Pool Set 1881
+Train Set 400
+Training Set Size:  23%|██████████████                                              | 420/1800 [02:29<06:36,  3.48it/sTest set: Average loss: -0.1604, Accuracy: 1465/1854 (79.02%)                                                           
+AUC Score 0.6078729994837377                                                                                           
+Dataset Length
+Pool Set 1861
+Train Set 420
+Training Set Size:  24%|██████████████▋                                             | 440/1800 [02:35<06:35,  3.44it/sTest set: Average loss: -0.1384, Accuracy: 1480/1854 (79.83%)                                                           
+AUC Score 0.5952596061656464                                                                                           
+Dataset Length
+Pool Set 1841
+Train Set 440
+Training Set Size:  26%|███████████████▎                                            | 460/1800 [02:40<06:20,  3.52it/sTest set: Average loss: -0.1528, Accuracy: 1481/1854 (79.88%)                                                           
+AUC Score 0.5862526735009957                                                                                           
+Dataset Length
+Pool Set 1821
+Train Set 460
+Training Set Size:  27%|████████████████                                            | 480/1800 [02:45<06:01,  3.65it/sTest set: Average loss: -0.1433, Accuracy: 1479/1854 (79.77%)                                                           
+AUC Score 0.5772770853307766                                                                                           
+Dataset Length
+Pool Set 1801
+Train Set 480
+Training Set Size:  28%|████████████████▋                                           | 500/1800 [02:52<06:13,  3.48it/sTest set: Average loss: -0.1391, Accuracy: 1473/1854 (79.45%)                                                           
+AUC Score 0.6115956191459547                                                                                           
+Dataset Length
+Pool Set 1781
+Train Set 500
+Training Set Size:  29%|█████████████████▎                                          | 520/1800 [02:59<06:46,  3.15it/sTest set: Average loss: -0.1479, Accuracy: 1484/1854 (80.04%)                                                           
+AUC Score 0.596601888044841 
+```
 
 
 ### Attention Transformer for Molecules
@@ -118,17 +188,6 @@ to convert smiles data into graph structure. The model uses as input the graph n
 
 
 
-
-
-
-
-
-## Experimental Procedure and Discussion
-
-
-## Experiment Results
-
-
 ## Failure Modes and Limitations
 Structure mapping with active and inactive
 Graph structure not there - so featurizers not useful that converts smiles to graph structure
@@ -139,5 +198,5 @@ Graph structure not there - so featurizers not useful that converts smiles to gr
 
 
 
-##### References : 
+### References : 
 [1] Molecule Attention Transformer (from the paper : https://arxiv.org/pdf/2002.08264.pdf)
