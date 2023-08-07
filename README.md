@@ -41,12 +41,12 @@ Below we discuss the decision making process we took to detect active compunds, 
 In particular, we try *a few models* for this dataset, under different molecular featurizations, and take an *active learning* route to obtain a balanced dataset consisting of only the informative samples. One key challenge for this dataset is that since the number of active compounds is few, we work on a small data regime, where the small or active dataset is selected by following a *Deep Bayesian Active Learning* pipeline, as discussed below. 
 
 ### List of Models for classification on this dataset 
-1. Attention based model for the prediction task
-(Molecule Attention Transformer from the paper : https://arxiv.org/pdf/2002.08264.pdf)
-2. Graph Attention Network 
-3. Graph Convolutional Network
-4. Graph Attention and Convolutional Network
-5. Deep Bayesian Neural Network with an Active Learning pipeline
+1. Deep Bayesian Neural Network with an Active Learning pipeline 
+2. Attention based model for the prediction task (Molecule Attention Transformer)
+3. Graph Attention Network 
+4. Graph Convolutional Network
+5. Graph Attention and Convolutional Network
+
 
 ### Featurization 
 We use several different types of featurization, depending on the model at use. For e,g for the Graph Convolutional and Attention networks (GCN and GAT) we use a MGCF featurizer to conver the smiles representation, to get GraphData with node features, edge indices and adjacency matrices. Similar attributes can also be obtained, if we use other types of featurizatioon (e.g to get molecule representations from smiles), when we used a Marked Attention Transformer (MAT). Other than graph networks and attention transformers, we also trained a relatively simple Bayesian NN with Monte-Carlo dropout, where we used a rdFingerprintGenerator based featurization of the smiles representation to train a standard Bayesian classifier on this dataset. Performance varies significantly depending on the featurization. 
@@ -140,4 +140,4 @@ Graph structure not there - so featurizers not useful that converts smiles to gr
 
 
 ##### References : 
-[1] Molecule Attention Transformer
+[1] Molecule Attention Transformer (from the paper : https://arxiv.org/pdf/2002.08264.pdf)
