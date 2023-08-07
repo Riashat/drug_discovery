@@ -129,17 +129,15 @@ test_dataset_y = splits[3]
 # num_initial_samples = 20
 num_classes = 2
 
-# initial_samples_old = active_learning.get_balanced_sample_indices(
-#     repeated_mnist.get_targets(train_dataset), num_classes=num_classes, n_per_digit=num_initial_samples / num_classes
-# )
-     
+
 initial_samples = active_learning.get_balanced_sample_indices(
     train_dataset_y , num_classes=2, n_per_digit=10
 )
 
-## trial
-max_training_samples = 1750
-acquisition_batch_size = 100
+
+## experiment
+max_training_samples = 1800
+acquisition_batch_size = 20
 num_inference_samples = 100
 num_test_inference_samples = 2
 num_samples = 100
@@ -147,18 +145,6 @@ test_batch_size = 32
 batch_size = 64
 scoring_batch_size = 64
 training_iterations = 4096 * 6
-
-
-# experiment
-# max_training_samples = 1800
-# acquisition_batch_size = 20
-# num_inference_samples = 100
-# num_test_inference_samples = 2
-# num_samples = 100
-# test_batch_size = 32
-# batch_size = 64
-# scoring_batch_size = 64
-# training_iterations = 4096 * 6
 
 use_cuda = torch.cuda.is_available()
 
@@ -178,10 +164,10 @@ active_learning_data = active_learning.ActiveLearningData(train_loader.dataset)
 active_learning_data.acquire(initial_samples)
 
 # THIS REMOVES MOST OF THE POOL DATA. UNCOMMENT THIS TO TAKE ALL UNLABELLED DATA INTO ACCOUNT!
-# active_learning_data.extract_dataset_from_pool(500)
+active_learning_data.extract_dataset_from_pool(500)
 
 ## trial
-active_learning_data.extract_dataset_from_pool(200)
+# active_learning_data.extract_dataset_from_pool(200)
 
 
 
@@ -311,9 +297,6 @@ while True:
     active_learning_data.acquire(candidate_batch.indices)
     added_indices.append(dataset_indices)
     pbar.update(len(dataset_indices))
-
-active_train_set = np.concatenate(all_dataset_indices, axis=0)
-np.save("./active_indices.npy", active_train_set)
 
 ## 
 # hide
