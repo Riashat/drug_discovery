@@ -54,7 +54,7 @@ We use several different types of featurization, depending on the model at use. 
 
 ## Description of Model and Approach, with Experimental Results
 
-### Deep Bayesian Active Learning for Imbalanced and Samll Data Regime
+### Deep Bayesian Active Learning for Imbalanced and Small Data Regime
 ```
 python main_active_learning.py
 ```
@@ -157,7 +157,7 @@ Epoch 009: | Train Loss: 0.49505 | Train Acc: 80.000| Train ROC: 0.578|
 ```
 
 Experimental results after the active learning pipeline with more balanced/improved proportion
-of active to inactive compounds
+of active to inactive compounds.
 
 ```
 ------ Balanced Dataset : 
@@ -260,3 +260,8 @@ Graph structure not there - so featurizers not useful that converts smiles to gr
 
 ### References : 
 [1] Molecule Attention Transformer (from the paper : https://arxiv.org/pdf/2002.08264.pdf)
+[2] Deep Bayesian Active Learning with Image Data : https://arxiv.org/abs/1703.02910
+[3] BatchBald : Efficient and Diverse Batch Acquisition :  https://arxiv.org/abs/1906.08158
+[4] Graph Attention Networks :  https://arxiv.org/abs/1710.10903
+[5] Graph Convolutional Networks : https://tkipf.github.io/graph-convolutional-networks/ 
+
